@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/ShellSort.dir/main.cpp.o  -o ShellSort 
