@@ -1,0 +1,4 @@
+/home/bruski/local/clion-2020.1.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/bruski/workspace/cpp/play-with-algorithm/ShellSort
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/bruski/workspace/cpp/play-with-algorithm/ShellSort/cmake-build-debug

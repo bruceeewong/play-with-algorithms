@@ -1,0 +1,3 @@
+/home/bruski/workspace/cpp/play-with-algorithm/ShellSort/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/bruski/workspace/cpp/play-with-algorithm/ShellSort/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/bruski/workspace/cpp/play-with-algorithm/ShellSort/cmake-build-debug/CMakeFiles/ShellSort.dir

@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/bruski/workspace/cpp/play-with-algorithm/InsertionSort/SelectionSort.h
+
+/home/bruski/workspace/cpp/play-with-algorithm/InsertionSort/SortTestHelper.h
+ctime
+-
+cstdlib
+-
+cassert
+-
+iostream
+-
+
+/home/bruski/workspace/cpp/play-with-algorithm/InsertionSort/main.cpp
+iostream
+-
+SortTestHelper.h
+/home/bruski/workspace/cpp/play-with-algorithm/InsertionSort/SortTestHelper.h
+SelectionSort.h
+/home/bruski/workspace/cpp/play-with-algorithm/InsertionSort/SelectionSort.h
+
