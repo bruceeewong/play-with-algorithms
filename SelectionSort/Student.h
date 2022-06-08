@@ -14,15 +14,12 @@ struct Student {
     string name;
     int score;
 
-    bool operator<(const Student &otherStudent) {
-        if (score != otherStudent.score) {
-            return score < otherStudent.score;
-        } else {
-            return name < otherStudent.name;
-        }
+    // 运算符重载
+    bool operator<(const Student &other) {
+        return score != other.score ? score < other.score : name < other.name;
     }
 
-    friend ostream& operator<<(ostream &os, const Student &student) {
+    friend ostream &operator<<(ostream &os, const Student &student) {
         os << "Student: " << student.name << " " << student.score << endl;
         return os;
     }

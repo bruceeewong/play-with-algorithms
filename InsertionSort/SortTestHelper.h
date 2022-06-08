@@ -46,8 +46,8 @@ namespace SortTestHelper {
         srand(time(NULL));
         for (int i = 0; i < swapTimes; i ++) {
             // 按照传入的数字,随机交换几次
-            int posX = rand() % n;  // [0,n]
-            int posY = rand() % n;  // [0,n]
+            int posX = rand() % n;  // [0,n)
+            int posY = rand() % n;  // [0,n)
             swap(arr[posX], arr[posY]);
         }
         return arr;
