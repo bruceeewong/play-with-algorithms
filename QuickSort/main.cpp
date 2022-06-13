@@ -32,6 +32,9 @@ void __quickSort(T arr[], int l, int r) {
 // InsertionSort: 0.067853 s
 template<typename T>
 void quickSort(T arr[], int n) {
+    if (n <= 16) {
+        return __insertionSort(arr, 0, n - 1);
+    }
     srand(time(NULL));
     __quickSort(arr, 0, n - 1);
 }
@@ -47,13 +50,13 @@ int __partition2(T arr[], int l, int r) {
     // i++, on the left side of i are all <= pivot
     // j--, on the right side of j are all >= pivot
     while (true) {
-        while (i <= r && arr[i] < pivot) i ++;
-        while (j >= l + 1 && arr[j] > pivot) j --;
+        while (i <= r && arr[i] < pivot) i++;
+        while (j >= l + 1 && arr[j] > pivot) j--;
         if (i > j) break;
 
         swap(arr[i], arr[j]);
-        i ++;
-        j --;
+        i++;
+        j--;
     }
     // j is now at the right end of elements that <= pivot
     swap(arr[l], arr[j]);
@@ -73,12 +76,54 @@ void __quickSort2(T arr[], int l, int r) {
 // InsertionSort: 0.067853 s
 template<typename T>
 void quickSort2(T arr[], int n) {
+    if (n <= 16) {
+        return __insertionSort(arr, 0, n - 1);
+    }
     srand(time(NULL));
     __quickSort2(arr, 0, n - 1);
 }
 
+// 三路快排
+template<typename T>
+void __quickSort3(T arr[], int l, int r) {
+    if (l >= r) return;
 
+    // partition
+    swap(arr[l], arr[rand() % (r - l + 1) + l]); // 随机选枢纽元，并挪到最左侧
+    T pivot = arr[l];
 
+    int lt = l; // arr[l+1, lt] < v
+    int i = l + 1; // arr[lt, i) == v
+    int gt = r + 1; // arr[gt, r] > v
+
+    while (i < gt) {
+        if (arr[i] < pivot) {
+            swap(arr[lt + 1], arr[i]);
+            lt++;
+            i++;
+        } else if (arr[i] > pivot) {
+            swap(arr[i], arr[gt - 1]);
+            gt--;
+        } else {
+            i++;
+        }
+    }
+    swap(arr[l], arr[lt]);
+    lt--;// after swap, lt is one after the <v index;
+
+    // recursion
+    __quickSort3(arr, l, lt);
+    __quickSort3(arr, gt, r);
+}
+
+template<typename T>
+void quickSort3(T arr[], int n) {
+    if (n <= 16) {
+        return __insertionSort(arr, 0, n - 1);
+    }
+    srand(time(NULL));
+    __quickSort3(arr, 0, n - 1);
+}
 
 
 int main() {
@@ -89,10 +134,12 @@ int main() {
     int *arr = SortTestHelper::generateRandomArray(n, 0, 10);
     int *arr1 = SortTestHelper::copyIntArray(arr, n);
     int *arr2 = SortTestHelper::copyIntArray(arr, n);
+    int *arr3 = SortTestHelper::copyIntArray(arr, n);
 
     SortTestHelper::testSort("Quick Sort", quickSort, arr, n);
     SortTestHelper::testSort("Quick Sort2", quickSort2, arr1, n);
-    SortTestHelper::testSort("Merge Sort", mergeSort, arr2, n);
+    SortTestHelper::testSort("Quick Sort3", quickSort3, arr2, n);
+    SortTestHelper::testSort("Merge Sort", mergeSort, arr3, n);
 
     delete[] arr;
     delete[] arr1;
