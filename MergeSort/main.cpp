@@ -317,14 +317,15 @@ void testInverseNumberPairs() {
     arr1 = SortTestHelper::copyIntArray(arr, n);
 
     cout << "Test for random array, n: " << n << " , range: [" << rangeL << ", " << rangeR << "]" << endl;
-    SortTestHelper::testCountPerformance("count By MergeSort", countInverseNumberPairs , arr1, n);
+    SortTestHelper::testCountPerformance("count By MergeSort", countInverseNumberPairs, arr1, n);
     SortTestHelper::testCountPerformance("brutalCount", brutalCount, arr, n);
     cout << endl;
 }
 
+
 int main() {
-//    testMergeSort();
-//    testMergeSortForLinkedList();
-    testInverseNumberPairs();
+    testMergeSort();
+    testMergeSortForLinkedList();
+//    testInverseNumberPairs();
     return 0;
 }

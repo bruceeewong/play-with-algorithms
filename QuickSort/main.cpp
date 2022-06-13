@@ -126,6 +126,61 @@ void quickSort3(T arr[], int n) {
 }
 
 
+template<typename T>
+int __selectionPartition(T arr[], int l, int r) {
+    int p = rand() % (r-l+1) + l;
+    swap(arr[l], arr[p]);
+    T pivot = arr[l];
+
+    // arr[l+1...p] < pivot, arr[p+1, r] > p
+    int j = l;
+    for (int i = l + 1; i <= r; i ++) {
+        if (arr[i] < pivot) {
+            swap(arr[i], arr[j + 1]);
+            j ++;
+        }
+    }
+    swap(arr[l], arr[j]);
+    return j;
+}
+
+template<typename T>
+T __selection(T arr[], int l, int r, int k) {
+    if (l == r) return arr[l];
+
+    int p = __selectionPartition(arr, l, r);
+
+    if (k == p) return arr[p];
+    if (k < p) return __selection(arr, l, p - 1, k);
+    return __selection(arr, p + 1, r, k);
+}
+
+template<typename T>
+T getKthNumByQuickSort(T arr[], int n, int k) {
+    srand(time(NULL));
+    return __selection(arr, 0, n - 1, k);
+}
+
+
+int getKthBySort(int arr[], int n, int k) {
+    int *help = new int[n];
+    for (int i = 0; i < n; i++) {
+        help[i] = arr[i];
+    }
+    mergeSort(help, n);
+    return help[k];
+}
+
+
+void testGetKthNum() {
+    int N = 2;
+    int *arr = new int[]{4, 2, 6, 1, 5, 7};
+    int n = 6;
+    assert(getKthBySort(arr, n, N) == 4);
+    assert(getKthNumByQuickSort(arr, n, N) == 4);
+}
+
+
 int main() {
     int n = 100000;
 //    int *arr = SortTestHelper::generateRandomArray(n, 0, n);
@@ -144,5 +199,7 @@ int main() {
     delete[] arr;
     delete[] arr1;
     delete[] arr2;
+
+    testGetKthNum();
     return 0;
 }
