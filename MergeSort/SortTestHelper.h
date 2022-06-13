@@ -84,6 +84,16 @@ namespace SortTestHelper {
         cout << sortName << " : " << double(endTime - startTime) / CLOCKS_PER_SEC << " s" << endl;
     }
 
+    template<typename T>
+    void testCountPerformance(string sortName, int(*sort)(T[], int), T arr[], int n) {
+        clock_t startTime = clock();
+        int result = sort(arr, n);
+        cout << "pair count: " << result << endl;
+        clock_t endTime = clock();
+        // 时钟周期差 除以每秒的时钟周期，得秒数
+        cout << sortName << " : " << double(endTime - startTime) / CLOCKS_PER_SEC << " s" << endl;
+    }
+
     int *copyIntArray(int a[], int n) {
         int *arr = new int[n];
         // 头指针,尾指针, 目标指针

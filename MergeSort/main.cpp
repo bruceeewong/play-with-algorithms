@@ -196,16 +196,41 @@ void print(Node<T> *head) {
     cout << "tail" << endl;
 }
 
-int main() {
+void testMergeSort() {
     int n = 10000;
-    int *arr = SortTestHelper::generateRandomArray(n, 0, n);
-//    int *arr = SortTestHelper::generateNearlyOrderedArray(n, 10);
+    int rangeL = 0, rangeR = n;
+    int *arr = SortTestHelper::generateRandomArray(n, rangeL, rangeR);
     int *arr1 = SortTestHelper::copyIntArray(arr, n);
+    int *arr2 = SortTestHelper::copyIntArray(arr, n);
 
-//    SortTestHelper::testSort("Insertion Sort", insertionSort, arr, n);
-//    SortTestHelper::testSort("Merge Sort", mergeSort, arr, n);
-//    SortTestHelper::testSort("mergeSortBU", mergeSortBU, arr1, n);
+    cout << "Test for random array, n: " << n << " , range: [" << rangeL << ", " << rangeR << "]" << endl;
+    SortTestHelper::testSort("Insertion Sort", insertionSort, arr, n);
+    SortTestHelper::testSort("Merge Sort", mergeSort, arr1, n);
+    SortTestHelper::testSort("mergeSortBU", mergeSortBU, arr2, n);
+    cout << endl;
 
+    delete[] arr;
+    delete[] arr1;
+    delete[] arr2;
+
+    int swapTimes = 10;
+    arr = SortTestHelper::generateNearlyOrderedArray(n, swapTimes);
+    arr1 = SortTestHelper::copyIntArray(arr, n);
+    arr2 = SortTestHelper::copyIntArray(arr, n);
+
+    cout << "Test for nearly ordered array, n: " << n << " , swap times: " << swapTimes << "" << endl;
+    SortTestHelper::testSort("Insertion Sort", insertionSort, arr, n);
+    SortTestHelper::testSort("Merge Sort", mergeSort, arr1, n);
+    SortTestHelper::testSort("mergeSortBU", mergeSortBU, arr2, n);
+    cout << endl;
+
+    delete[] arr;
+    delete[] arr1;
+    delete[] arr2;
+}
+
+void testMergeSortForLinkedList() {
+    cout << "Test for linked list" << endl;
     Node<int> *head = new Node<int>(3);
     Node<int> *node1 = new Node<int>(2);
     Node<int> *node2 = new Node<int>(1);
@@ -217,8 +242,89 @@ int main() {
     print(head);
     head = mergeSortForLinkList(head);
     print(head);
+}
 
+
+int __countAndMerge(int arr[], int l, int mid, int r) {
+    int *help = new int[r - l + 1];
+    for (int i = l; i <= r; i++) {
+        help[i - l] = arr[i];
+    }
+
+    int counter = 0;
+    int i = l, j = mid + 1;
+    for (int k = l; k <= r; k++) {
+        if (i > mid) {
+            //  左半部分已经处理完
+            arr[k] = help[j - l];
+            j++;
+        } else if (j > r) {
+            // 右半部分已经处理完
+            arr[k] = help[i - l];
+            i++;
+        } else if (help[i - l] <= help[j - l]) {
+            // 左半部分所指元素 <= 右半部分所指元素
+            arr[k] = help[i - l];
+            i++;
+        } else {
+            // 右侧的值比左侧的小，则右侧此值可与左侧未处理的值都构成逆序对，直接加上左侧未处理值的个数
+            arr[k] = help[j - l];
+            j++;
+
+            counter += mid - i + 1;
+        }
+    }
+    delete[] help;
+    return counter;
+}
+
+int __inversionCount(int arr[], int l, int r) {
+    if (l >= r) return 0;
+
+    int mid = (l + r) / 2;
+    int res1 = __inversionCount(arr, l, mid);
+    int res2 = __inversionCount(arr, mid + 1, r);
+    return res1 + res2 + __countAndMerge(arr, l, mid, r);
+}
+
+int countInverseNumberPairs(int arr[], int n) {
+    return __inversionCount(arr, 0, n - 1);
+}
+
+
+int brutalCount(int arr[], int n) {
+    int counter = 0;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] > arr[j]) counter += 1;
+        }
+    }
+    return counter;
+}
+
+void testInverseNumberPairs() {
+    int *arr = new int[]{8, 6, 2, 3, 1, 5, 7, 4};
+    int *arr1 = SortTestHelper::copyIntArray(arr, 8);
+    cout << "brutalCount: The number of Inverse Pairs is " << brutalCount(arr, 8) << endl;
+    cout << "countByMergeSort: The number of Inverse Pairs is " << countInverseNumberPairs(arr1, 8);
     delete[] arr;
     delete[] arr1;
+
+    // performance benchmark
+    int n = 10000;
+    int rangeL = 0, rangeR = n;
+    arr = SortTestHelper::generateRandomArray(n, rangeL, rangeR);
+    arr1 = SortTestHelper::copyIntArray(arr, n);
+
+    cout << "Test for random array, n: " << n << " , range: [" << rangeL << ", " << rangeR << "]" << endl;
+    SortTestHelper::testCountPerformance("count By MergeSort", countInverseNumberPairs , arr1, n);
+    SortTestHelper::testCountPerformance("brutalCount", brutalCount, arr, n);
+    cout << endl;
+}
+
+int main() {
+//    testMergeSort();
+//    testMergeSortForLinkedList();
+    testInverseNumberPairs();
     return 0;
 }
